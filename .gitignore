@@ -1,0 +1,11 @@
+**/*.zip
+.idea
+*.iml
+*.pyc
+**/*.zip
+**/*.backup
+**/*.egg-info
+.terraform*
+python*-env
+*.tfstate
+
