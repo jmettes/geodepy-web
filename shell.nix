@@ -15,6 +15,7 @@ stdenv.mkDerivation rec {
     # Add packages from nix-env -qaP | grep -i needle queries
     jetbrains.pycharm-community
     terraform_0_11
+    graphviz
 
     # With Python configuration requiring a special wrapper
     (python36.buildEnv.override {
