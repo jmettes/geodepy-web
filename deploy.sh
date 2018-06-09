@@ -35,7 +35,7 @@ export TF_VAR_application=geodepy-web
 export TF_VAR_tf_state_bucket=geodepy-web-terraform-state
 export TF_VAR_tf_state_table=geodepy-web-terraform-state
 
-
+pushd terraform
 terraform init \
     -backend-config "bucket=${TF_VAR_tf_state_bucket}" \
     -backend-config "dynamodb_table=${TF_VAR_state_table}" \
@@ -48,3 +48,4 @@ terraform plan
 if [ -z "$dryRun" ]; then
     terraform apply -auto-approve
 fi
+popd
