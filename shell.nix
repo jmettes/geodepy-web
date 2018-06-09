@@ -14,6 +14,8 @@ stdenv.mkDerivation rec {
   buildInputs = [
     # Add packages from nix-env -qaP | grep -i needle queries
     jetbrains.pycharm-community
+    vscode
+    nodejs
     terraform_0_11
     graphviz
 
@@ -30,6 +32,5 @@ stdenv.mkDerivation rec {
 
   # Customizable development shell setup
   shellHook = ''
-    # export 
   '';
 }

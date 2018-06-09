@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+      <script src="app.js"></script>
+      <script src="endpoint.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>
+        lat1: <input type="text" v-model="lat1" placeholder="lat1" />
+        lon1: <input type="text" v-model="lon1" placeholder="lon1" />
+      </p>
+      <p>
+        lat2: <input type="text" v-model="lat2" placeholder="lat2" />
+        lon2: <input type="text" v-model="lon2" placeholder="lon2" />
+      </p>
+      <button @click="getvincenty">Calculate</button>
+      <p v-if="el_dist !== null">el_dist: {{ el_dist }}</p>
+      <p v-if="azi1to2 !== null">azi1to2: {{ azi1to2 }}</p>
+      <p v-if="azi2to1 !== null">azi2to1: {{ azi2to1 }}</p>
+    </div>
+  </body>
+</html>

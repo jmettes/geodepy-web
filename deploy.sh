@@ -47,5 +47,15 @@ terraform plan
 
 if [ -z "$dryRun" ]; then
     terraform apply -auto-approve
+
+    endpoint=$(terraform output endpoint)
+    echo "var endpoint = \"${endpoint}\";" > ../frontend/endpoint.js
+
+    source_bucket=$(terraform output source_bucket)
+    pushd ../frontend
+    aws s3 sync . s3://${source_bucket}
+    popd
+
 fi
+
 popd

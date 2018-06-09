@@ -9,3 +9,4 @@
 python*-env
 *.tfstate
 
+frontend/endpoint.js
