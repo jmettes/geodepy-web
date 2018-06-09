@@ -11,9 +11,8 @@ def parse_csv(body):
                          delimiter=',',
                          dtype='f8, f8, f8, f8',
                          names=['lat1', 'lon1', 'lat2', 'lon2'])
-
     rows = dms2dd_v(np.array(rows[['lat1', 'lon1', 'lat2', 'lon2']].tolist()))
-    vincenty_rows = list(vincinv(*list(coords)) for coords in rows)
+    vincenty_rows = list(vincinv(*list(coords)) for coords in np.atleast_2d(rows))
     return '\n'.join('%12.8f, %12.8f, %12.8f' % tuple(v) for v in vincenty_rows)
 
 
@@ -25,6 +24,10 @@ def handler(event, context):
         if 'content-type' in headers \
         else None
 
+    accept = headers['accept'].strip() \
+        if 'accept' in headers \
+        else None
+
     if content_type == 'text/csv':
         body = parse_csv(event['body'])
     else:
@@ -32,18 +35,18 @@ def handler(event, context):
 
     return {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": body if accept == 'text/csv' else json.dumps(body)
     }
 
 
 if __name__ == '__main__':
     event = {
         'headers': {
-            'Content-Type': ' text/csv'
+            'Content-Type': ' text/csv',
+            'Accept': ' text/csv'
         },
 
-        'body': '-37.57037203, 144.25295244, -37.39101561, 143.55353839\n' +
-                '-37.57037203, 144.25295244, -37.39101561, 143.55353839'
+        'body': '-37.57037203, 144.25295244, -37.39101561, 143.55353839'
         # 'body': {
         #     'lat1': -37.57037203,
         #     'lon1': 144.25295244,
