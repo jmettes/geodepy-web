@@ -18,7 +18,7 @@ window.onload = function () {
           headers: new Headers(),
           body: JSON.stringify({
             "coords": [
-              {"lat1": this.lat1, "lon1": this.lon2, "lat2": this.lat2, "lon2": this.lon2}
+              {"lat1": parseFloat(this.lat1), "lon1": parseFloat(this.lon1), "lat2": parseFloat(this.lat2), "lon2": parseFloat(this.lon2)}
             ]
           })
         })
