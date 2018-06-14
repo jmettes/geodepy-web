@@ -1,0 +1,74 @@
+@startuml
+skinparam noteBorderColor black
+skinparam noteBackgroundColor white
+skinparam agentBorderColor black
+skinparam agentBackgroundColor white
+skinparam databaseBorderColor black
+skinparam databaseBackgroundColor white
+skinparam actorBorderColor black
+skinparam actorBackgroundColor white
+skinparam arrowColor black
+skinparam shadowing false
+skinparam linetype ortho
+top to bottom direction
+actor User
+agent CloudFront
+agent API
+note right
+Endpoints:
+/vincenty
+end note
+
+agent Lambda
+note right
+import geodepy
+
+def handle(input):
+  return calculate(input)
+end note
+
+database S3
+note right
+vincenty.html
+{{
+salt
+{
+  {lat1: | "123.456" | lon1: | "123.456"}
+  {lat2: | "123.456" | lon2: | "123.456"}
+  [Calculate]
+}
+}}
+end note
+agent PyPI
+agent Github
+
+User -> (1. Browser Request)
+note top
+Go to: http://geodesy.ga.gov.au/calculators/vincenty.html
+end note
+
+(1. Browser Request) -> CloudFront
+CloudFront -r-> S3
+S3 -down-> API
+API -> Lambda
+
+User --> (2. Direct API call)
+note bottom
+curl -X POST \ 
+-d '37.5703, 144.2529, \ 
+-37.3910, 143.5535' \ 
+http://api.geodesy.ga.gov.au/vincenty
+end note
+(2. Direct API call) -> API
+
+User <-l- (3. Calculate manually)
+note top
+$ pip install geodepy
+$ python
+>>> import geodepy
+end note
+(3. Calculate manually) <--- PyPI
+PyPI ..> Lambda
+PyPI <- Github
+
+@enduml

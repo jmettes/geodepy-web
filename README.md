@@ -2,15 +2,7 @@
 
 AWS infrastructure for web application of [GeodePy](https://github.com/GeoscienceAustralia/geodesy-package)
 
-![](infrastructure-graph.png)
-
-Image generated with:
-
-```
-$ terraform graph \
- | grep -Ev "meta.count-boundary|local.|var.|output.|data.aws_caller_identity.current|provider." \
- | dot -Tpng > infrastructure-graph.png
-```
+![](flowchart.png)
 
 ## Building
 

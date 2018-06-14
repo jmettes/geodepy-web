@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     vscode
     nodejs
     terraform_0_11
-    graphviz
+    plantuml
 
     # With Python configuration requiring a special wrapper
     (python36.buildEnv.override {
