@@ -1,16 +1,8 @@
-//data "archive_file" "geodepy_web_source" {
-//  type        = "zip"
-//  source_file = "handler.py"
-//  output_path = "geodepy-web-lambda.zip"
-//}
-
 resource "aws_s3_bucket_object" "geodepy_web_source_object" {
   bucket = "${aws_s3_bucket.lambda_source_bucket.id}"
   key    = "${local.name_tag_prefix}/geodepy-web-lambda.zip"
   source = "../packaging/package_scipy.zip"
   etag   = "${md5(file("../packaging/package_scipy.zip"))}"
-//  source = "${data.archive_file.geodepy_web_source.output_path}"
-//  etag   = "${data.archive_file.geodepy_web_source.output_md5}"
 }
 
 resource "aws_iam_role" "lambda_role" {
@@ -59,13 +51,11 @@ EOF
 resource "aws_lambda_function" "geodepy_web_lambda" {
   s3_bucket         = "${aws_s3_bucket_object.geodepy_web_source_object.bucket}"
   s3_key            = "${aws_s3_bucket_object.geodepy_web_source_object.key}"
-  s3_object_version = "${aws_s3_bucket_object.geodepy_web_source_object.version_id}"
-//  source_code_hash  = "${data.archive_file.geodepy_web_source.output_md5}"
-  source_code_hash  = "${md5(file("../packaging/package_scipy.zip"))}"
   function_name     = "${local.name_tag_prefix}-lambda"
   role              = "${aws_iam_role.lambda_role.arn}"
   handler           = "handler.handler"
   runtime           = "python3.6"
+  timeout           = "300"
 }
 
 resource "aws_lambda_permission" "api_gateway" {
