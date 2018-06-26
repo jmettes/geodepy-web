@@ -10,3 +10,4 @@ python*-env
 *.tfstate
 
 frontend/endpoint.js
+terraform/geodepy

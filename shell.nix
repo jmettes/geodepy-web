@@ -26,6 +26,8 @@ stdenv.mkDerivation rec {
         # Add pythonPackages without the prefix
         numpy
         scipy
+        pip
+        virtualenv
       ];
     })
   ];
