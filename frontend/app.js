@@ -13,7 +13,7 @@ window.onload = function () {
     methods: {
       getvincenty: function() {
         this.searching = true;
-        fetch(endpoint, {
+        fetch(endpoint + '/vincenty', {
           method: 'POST',
           headers: new Headers(),
           body: JSON.stringify({

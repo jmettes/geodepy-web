@@ -32,7 +32,7 @@ $ curl -XPOST \
  -H"Accept: text/csv" \
  -H"Content-Type: text/csv" \
  -d$'-37.57037203, 144.25295244, -37.39101561, 143.5535383\n-37.57037203, 144.25295244, -37.39101561, 143.5535383' \
- https://<your-endpoint-url>
+ https://<your-endpoint-url>/vincenty
 ```
 
 returns:

@@ -1,18 +1,21 @@
-# run with `nix-build shell.nix`, and then reference the bin/python in pycharm
+let
+  defaultPkgs = import <nixpkgs> {};
+  pinnedPkgs = import (defaultPkgs.fetchFromGitHub {
+    owner = "NixOS";
+    repo = "nixpkgs-channels";
+    rev = "a8c71037e041"; # 21 June 2018
+    sha256 = "1z4cchcw7qgjhy0x6mnz7iqvpswc2nfjpdynxc54zpm66khfrjqw";
+  }) {};
 
-with import <nixpkgs> {};
-stdenv.mkDerivation rec {
-  name = "env";
+in
 
-  # Mandatory boilerplate for buildable env
-  env = buildEnv { name = name; paths = buildInputs; };
-  builder = builtins.toFile "builder.sh" ''
-    source $stdenv/setup; ln -s $env $out
-  '';
+{ nixpkgs ? pinnedPkgs }:
 
-  # Customizable development requirements
-  buildInputs = [
-    # Add packages from nix-env -qaP | grep -i needle queries
+let
+  pkgs = if nixpkgs == null then defaultPkgs else pinnedPkgs;
+
+  buildTools = with pkgs; [
+    awscli
     jetbrains.pycharm-community
     vscode
     nodejs
@@ -32,7 +35,16 @@ stdenv.mkDerivation rec {
     })
   ];
 
-  # Customizable development shell setup
-  shellHook = ''
-  '';
-}
+  devEnv = with pkgs; buildEnv {
+    name = "devEnv";
+    paths = buildTools;
+  };
+in
+  pkgs.runCommand "setupEnv" {
+    buildInputs = [
+      devEnv
+    ];
+    shellHook = ''
+        export region=ap-southeast-2
+    '';
+  } ""
