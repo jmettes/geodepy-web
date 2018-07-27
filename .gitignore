@@ -8,6 +8,7 @@
 .terraform*
 python*-env
 *.tfstate
+*/__pycache__
 
 frontend/endpoint.js
 terraform/geodepy
